@@ -1,89 +1,81 @@
-# 🗿 Polyglot Code Rosetta
+# 🐟 作为金鱼如何快速练习coding
 
-> **Your Self-Evolving Personal Syntax Knowledge Base.**
-> 一个懂你思维、零延迟的跨语言代码语法速查与知识管理中枢。
-
----
-
-## 📖 项目简介 (Introduction)
-
-在日常的 Data Science 和 Quant Finance 工作中，我们经常需要在 Python (Pandas)、R (Base) 和 SQL 之间反复横跳。虽然现有的大模型 (如 ChatGPT/DeepSeek) 可以回答语法问题，但每次提问都需要经历“打开网页 -> 输入上下文 -> 等待流式输出 -> 复制”的漫长过程。
-
-**Polyglot Rosetta** 旨在解决这一痛点。它采用 **Local-First (本地优先)** 架构，将数据操作的核心概念（如“合并”、“透视”、“填补缺失值”）作为中枢，一键映射出对应的 Python、R 和 SQL 原生写法。通过本地 JSON 数据库，实现**毫秒级零延迟检索**；并通过接入大模型 API，赋予了知识库**自我进化**的能力。
+> 一个本地运行的跨语言代码语法速查工具，带 AI 自动补全功能。
 
 ---
 
-## ✨ 核心特性 (Key Features)
+本频道十分感谢Gemini老师的从0开始支持。
 
-* **⚡️ 零延迟模糊检索 (Blazing Fast Fuzzy Search)**
-  * 内置跨字段全局检索引擎。无论是输入中文概念（如“合并”）、功能标签（如“left join”），还是直接输入某一种语言的残缺代码（如 `pd.merge` 或 `isna`），都能瞬间定位到包含三种语言的完整对照卡片。
-* **🧠 AI 驱动的知识增强 (AI-Augmented Generation)**
-  * 告别繁琐的手动录入。只需在侧边栏输入一个不懂的“中文概念”，后台将自动唤醒 DeepSeek 大模型，瞬间生成 Python、R (Base) 和 SQL 的高频标准写法及参数解析，并无缝写入本地数据库。
-* **🛠️ 沉浸式知识管理 (CRUD & Inline Management)**
-  * **内联编辑 (Inline Editing):** 发现标签不够精准？直接展开卡片修改并保存，状态即刻同步。
-  * **安全防误删 (Safe Deletion):** 采用现代化气泡弹出交互 (Popover)，二次确认机制彻底杜绝误删手滑。
-* **🛡️ 隐私与安全双重保障 (Privacy & Security First)**
-  * 数据库完全存储在本地 `snippets.json`，高度定制化且无需联网即可查询。
-  * API Key 采用严格的 `.env` 环境变量隔离，配合 `.gitignore`，确保开源分享时绝不泄漏个人凭证。
+## 📖 项目简介
+
+平时做数分（谁平时做了.jpg）经常要在 Python、R 和 SQL 之间切来切去，有些函数的具体写法老是忘掉。虽然可以问 AI，但只要切屏且等待美好的心流状态就会消失，手机马上变得极其有吸引力。
+
+这个小工具就是为了省去这些麻烦。它可以把常用的代码操作存放在本地。需要的时候搜一下，瞬间就能同时看到三种语言的代码该怎么写，不用等。如果遇到本地没存过的语法，直接输入中文概念，它会在后台叫 AI 写好并自动存下来，下次就能直接秒查了。
 
 ---
 
-## 🛠️ 技术栈 (Tech Stack)
+## ✨ 核心功能
 
-* **前端交互**: `Streamlit` (极简响应式 UI)
-* **核心算法**: `thefuzz` (Levenshtein 距离模糊匹配)
-* **后端驱动**: `Python 3.10+` + `subprocess` (子进程调度)
-* **数据持久化**: 本地 `JSON` (轻量级文档型存储)
-* **AI 大脑**: `DeepSeek-V3 API` (Prompt Engineering 强制结构化输出)
+* **极速模糊搜索:** 不管搜中文（比如“合并”）、功能标签（比如“左连接”），还是某门语言的函数名（比如 `pd.merge`），都能马上找出对应的完整代码卡片。
+* **AI 自动补充代码:** 遇到想添加的内容，直接在侧边栏输入中文，后台会自动调用 DeepSeek 大模型，生成 Python、R 和 SQL 的代码及参数说明，并存进的本地词典里。
+* **方便的词条管理:** 查出来的卡片可以直接在网页上点击编辑、改名或改标签。不需要的代码也可以直接删除，带二次确认弹窗，防止手滑。
+* **纯本地又安全:** 数据全存在本地的 `snippets.json` 里面。API 密码也是用环境变量隔离保护的，不用担心传到网上把宝贵的key泄露。
 
 ---
 
-## 🚀 快速开始 (Quick Start)
+## 🛠️ 用到的技术
 
-### 1. 克隆项目与环境准备
-确保你的电脑已安装 Python 及 pip。下载项目后，在终端运行：
+* 前端界面：Streamlit
+* 搜索匹配：thefuzz
+* 后端逻辑：Python + subprocess
+* 数据存储：本地 JSON
+* AI 接口：DeepSeek API
+
+---
+
+## 🚀 怎么用起来
+
+### 1. 安装依赖环境
+确保电脑装了 Python 和 pip，在终端运行下面这行代码把需要的库装上：
 ```bash
 pip install streamlit thefuzz python-dotenv requests
 ```
 
-### 2. 配置环境变量 (至关重要)
-在项目根目录新建一个名为 `.env` 的文件，填入你的大模型 API Key（参考 `.env.example`）：
+### 2. 配置你的 API 密码（必须做）
+在文件夹里新建一个叫 `.env` 的文件（可以照着 `.env.example` 抄），把自己的大模型 API Key 填进去：
 ```text
 DEEPSEEK_API_KEY=sk-你的真实API_KEY
 ```
 
-### 3. 一键启动
-* **开发者模式**: 在终端运行 `streamlit run app.py`。
-* **沉浸模式**: 直接双击项目根目录下的 `Start_Rosetta.bat`，即可在后台静默唤醒环境并弹出浏览器界面。
+### 3. 运行软件
+**最简单的办法：直接双击文件夹里的 `Start_Rosetta.bat` 文件！** 它会自动帮你配置好后台，并直接在浏览器里把网页弹出来。不想用了直接把黑色的控制台窗口关掉就行。
+
+*(如果你懂代码，也可以自己在终端里敲 `streamlit run app.py` 来运行。)*
 
 ---
 
-## 📂 目录结构 (Folder Structure)
+## 📂 文件夹结构
 
 ```text
 Project_rosetta/
 ├── Catcher/
-│   └── generator.py       # 后端自动化数据抓取与大模型交互引擎
-├── Search/
-│   └── snippets.json      # 属于你自己的高价值代码知识库
-├── .env                   # 本地环境变量 (不参与 Git 追踪)
-├── .env.example           # 环境变量配置模板
-├── .gitignore             # Git 忽略配置
-├── app.py                 # Streamlit 前端渲染与搜索引擎主程序
-├── Start_Rosetta.bat      # Windows 一键启动批处理脚本
-└── README.md              # 项目说明文档
+│   └── generator.py       # 后台跑的 Python 脚本，负责找 AI 要数据
+├── Database/
+│   └── snippets.json      # 本地代码词库
+├── .env                   # 存 API 密码的地方（千万别传到网上）
+├── .env.example           # 给别人看的密码配置文件格式
+├── .gitignore             # 用来拦截 .env 不让它上传的配置
+├── app.py                 # 网页前端和搜索的主程序
+├── Start_Rosetta.bat      # 双击直接运行的快捷脚本
+└── README.md              # 你现在在看的这个说明文档
 ```
 
 ---
 
-## 🔮 未来规划 (Roadmap)
+## 🔮 以后打算加的功能
 
-本项目目前处于稳定可用状态，未来计划引入以下工程化升级：
-- [ ] **数据验证**: 引入 `Pydantic` 拦截大模型异常格式输出，提升数据库健壮性。
-- [ ] **高并发处理**: 使用 `asyncio` 重构 `generator.py`，支持批量概念的一键并发生成。
-- [ ] **语义检索引擎**: 从字符级 Fuzzy Matching 升级为基于 ChromaDB 的本地 Vector Search。
-- [ ] **日志监控**: 接入标准 `logging` 模块，沉淀系统运行状态。
-
----
-
-*“Code is read much more often than it is written.”* *构建这个工具不仅是为了加速代码编写，更是为了沉淀我们思考数据的维度。*
+* 引入 Pydantic 来检查大模型输出的格式对不对，免得返回的数据乱码。
+* 把后端的请求改成异步的，以后一次性让 AI 补充好几个词条的时候就不用一个一个等。
+* 把普通的模糊搜索换成本地的向量数据库，根据意思来搜，找得更准。
+* 加个简单的运行日志，以后出 Bug 了好排查。
+* 也许会改成向量嵌入形式，更加利用LLM让搜索变得基于语义。
